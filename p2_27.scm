@@ -6,7 +6,7 @@
       (cons (car list1) (append (cdr list1) list2))))
 
 (define (deep-reverse list)
-  (cond ((number? list) list)
+  (cond ((not (pair? list)) list)
         ((null? (cdr list)) (cons (deep-reverse (car list)) '()))
         (else (append (deep-reverse (cdr list)) (cons (deep-reverse (car list)) '())))))
 

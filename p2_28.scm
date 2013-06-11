@@ -6,9 +6,9 @@
       (cons (car list1) (append (cdr list1) list2))))
 
 (define (fringe list)
-  (cond ((and (null? (cdr list)) (number? (car list)) list))
+  (cond ((and (null? (cdr list)) (not (pair? (car list))) list))
         ((null? (cdr list)) (fringe (car list)))
-        ((number? (car list)) (cons (car list) (fringe (cdr list))))
+        ((not (pair? (car list))) (cons (car list) (fringe (cdr list))))
         (else (append (fringe (car list)) (fringe (cdr list))))))
 
 (define x (list (list 1 2) (list 3 4)))

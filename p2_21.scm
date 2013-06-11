@@ -2,11 +2,13 @@
 
 (define (square x) (* x x))
 
+;Define directly
 ;(define (square-list items)
 ;  (if (null? items)
 ;      '()
 ;      (cons (square (car items)) (square-list (cdr items)))))
 
+;Using map and recursion
 (define (map proc items)
   (if (null? items)
       '()
