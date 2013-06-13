@@ -1,22 +1,22 @@
 #lang racket
 
-(define (accumulate op initial sequence)
-  (if (null? sequence)
-      initial
-      (op (car sequence)
-          (accumulate op initial (cdr sequence)))))
+;Using "reverse" rather than "append" to make the program more efficient.
 
-(define (append seq1 seq2)
-  (accumulate cons seq2 seq1))
+(define (reverse torev-seq done-seq)
+  (if (eq? torev-seq '())
+      done-seq
+      (reverse (cdr torev-seq) (cons (car torev-seq) done-seq))))
+
+;(reverse (list 2 1) (list 3 4 5)) ;'(1 2 3 4 5)
 
 ;;;
 
 (define (adjoin-set x set)
   (define (adjoin-set-tmp x set-before set-after)
-    (cond ((eq? set-after '()) (append set-before (list x)))
-          ((< x (car set-after)) (append set-before (cons x set-after)))
-          ((= x (car set-after)) (append set-before set-after))
-          ((> x (car set-after)) (adjoin-set-tmp x (append set-before (list (car set-after))) (cdr set-after)))))
+    (cond ((eq? set-after '()) (reverse set-before (list x)))
+          ((< x (car set-after)) (reverse set-before (cons x set-after)))
+          ((= x (car set-after)) (reverse set-before set-after))
+          ((> x (car set-after)) (adjoin-set-tmp x (cons (car set-after) set-before) (cdr set-after)))))
   (adjoin-set-tmp x '() set))
 
 (adjoin-set 1 (list 2 3 4 5)) ;'(1 2 3 4 5)
