@@ -15,21 +15,24 @@
       (mcar (front-ptr queue))))
 
 (define (insert-queue! queue item)
-  (let ((new-pair (mcons item '())))
+  (let ([new-pair (mcons item '())])
     (cond ((empty-queue? queue)
-           (set-front-ptr! queue new-pair)
-           (set-rear-ptr! queue new-pair)
-           queue)
+           (begin
+             (set-front-ptr! queue new-pair)
+             (set-rear-ptr! queue new-pair)
+             queue))
           (else
-           (set-mcdr! (rear-ptr queue) new-pair)
-           (set-rear-ptr! queue new-pair)
-           queue)))) 
+           (begin
+             (set-mcdr! (rear-ptr queue) new-pair)
+             (set-rear-ptr! queue new-pair)
+             queue)))))
 
 (define (delete-queue! queue)
   (cond ((empty-queue? queue)
          (error "DELETE! called with an empty queue" queue))
         (else
          (set-front-ptr! queue (mcdr (front-ptr queue)))
+         ;Racket seems have no way to release momery for the delete element?
          queue))) 
 
 (define (print-queue queue)
