@@ -1,0 +1,30 @@
+#lang racket
+
+(define (make-unbound!-first-frame var env)
+  (define (scan vars vals)
+    (cond ((null? vars) '())
+          ((eq? var (car vars)) 
+           (begin
+             (set! vars (cdr vars))
+             (set! vals (cdr vals))))
+          (else (scan (cdr vars) (cdr vals)))))
+  (let ((frame (first-frame env)))
+    (if (eq? (scan (frame-variables frame) (frame-values frame)) '())
+        (error "Unbound variable in the first frame" var env)
+        'okay)))
+
+(define (make-unbound!-entire-env var env)
+  (define (env-loop env)
+    (define (scan vars vals)
+      (cond ((null? vars)
+             (env-loop (enclosing-environment env)))
+            ((eq? var (car vars))
+             (begin
+               (set! vars (cdr vars))
+               (set! vals (cdr vals))))
+            (else (scan (cdr vars) (cdr vals)))))
+    (if (eq? env the-empty-environment)
+        (error "Unbound variable" var)
+        (let ((frame (first-frame env)))
+          (scan (frame-variables frame) (frame-values frame)))))
+  (env-loop env))

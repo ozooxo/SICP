@@ -53,8 +53,11 @@
 (define (let->combination exp env)
   (if (named-let? exp)
       (let ([exp-bindings-as-var (make-let (let-binding exp) (let-body exp))])
-        (eval ('define (cons (let-var-named exp) (let-var exp-bindings-as-var)) (let-body exp))
-              (make-begin (cons (let-var-named exp) (let-exp exp-bindings-as-var)) env)))))
+        (eval (make-begin
+               (list
+                ('define (cons (let-var-named exp) (let-var exp-bindings-as-var)) (let-body exp))
+                (cons (let-var-named exp) (let-exp exp-bindings-as-var))))
+              env))
       (eval (cons (make-lambda (let-var exp) (let-body exp)) (let-exp exp)) env)))
 
 ;For "named let", I turned the original form to 'define. E.g.,

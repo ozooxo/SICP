@@ -31,8 +31,9 @@
     (if (eq? (while-condition exp) true)
         (while-body exp)
         (while-iter (eval exp env) env))) ;It seems not correct. In order to have "while" in scheme,
-                                          ;the <body> should contains a lot of "let" to renew the value.
+                                          ;the <body> should contains a lot of "set!" to renew the value.
+                                          ;In every "whilt-iter", everything (include "set!") is excuted once.
                                           ;But it seems really hard for me to add/design an exact grammer
                                           ;to achieve that in the framework of scheme, as I still haven't 
-                                          ;design what's the exact meaning to "let 'let' run once".
+                                          ;design what's the exact meaning to "let 'set!' run once".
   (while-iter exp env))
