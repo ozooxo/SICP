@@ -1,16 +1,16 @@
 #lang racket
 
-(define (make-mutex)
+(define (make-semaphore)
   (define (make-semaphore-recur n) (if (= n 0)
                                        '()
                                        (cons false (make-semaphore-recur (- n 1)))))
   (let ((cell (make-semaphore-recur n)))            
-    (define (the-mutex m)
+    (define (the-semaphore m)
       (cond ((eq? m 'acquire)
              (if (test-and-set! cell)
-                 (the-mutex 'acquire))) ; retry
+                 (the-semaphore 'acquire))) ; retry
             ((eq? m 'release) (clear! cell))))
-    the-mutex))
+    the-semaphore))
 (define (clear! cell)
   (if (car cell)
       (set-car! cell false)
