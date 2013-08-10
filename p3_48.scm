@@ -12,6 +12,9 @@
     (set! balance (+ balance amount))
     balance)
   (let ((account-num how-many-account) ;;;;;;;;;;;;;;;;
+                                       ;It seems that we should protect that the definition of account number,
+                                       ;and "(set! how-many-account (+ how-many-account 1))" happen together.
+                                       ;Currently it does not have this protection.
         (protected (make-serializer)))
     (define (dispatch m)
       (cond ((eq? m 'withdraw) (protected withdraw))
