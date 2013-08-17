@@ -79,3 +79,28 @@
 
 (stream-take 10 (add-streams (mul-series cosine-series cosine-series)
                              (mul-series sine-series sine-series))) ;'(1 0 0 0 0 0 0 0 0 0)
+
+;;;
+
+;Exercise 3.61
+
+(define (invert-unit-series s) ;"s" is from the O(1) term.
+  (stream-cons 1 (stream-map (lambda (x) (- 0 x)) (mul-series (stream-cdr s) (invert-unit-series s)))))
+
+(exact->inexact (sum-list (stream-take 7 (invert-unit-series exp-series)))) ;0.3680555555555556
+(/ 1 (exp 1)) ;0.36787944117144233
+
+;;;
+
+;Exercise 3.62
+
+(define (div-series s1 s2)
+  (if (= (stream-car s2) 0)
+      (error "The denominator series begins with a zero constant term" s2)
+      (mul-series
+       s1
+       (scale-stream (invert-unit-series (scale-stream s2 (/ 1 (stream-car s2)))) (/ 1 (stream-car s2))))))
+
+(define tangent (div-series sine-series cosine-series))
+(exact->inexact (sum-list (stream-take 10 tangent))) ;1.5425044091710758
+(tan 1) ;1.5574077246549023
