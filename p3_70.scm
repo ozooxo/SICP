@@ -54,5 +54,5 @@
                  (pairs
                   integers
                   integers
-                  (lambda (x) (+ (+ (* 2 (car x)) (* 3 (cadr x))) (* 5 (* (car x) (cadr x))))))))
+                  (lambda (x) (+  (* 2 (car x)) (* 3 (cadr x)) (* 5  (car x) (cadr x)))))))
 ;'((1 1) (1 7) (1 11) (1 13) (1 17) (1 19) (1 23) (1 29) (1 31) (7 7) (1 37) (1 41) (1 43) (1 47) (1 49))

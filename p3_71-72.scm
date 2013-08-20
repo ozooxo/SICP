@@ -41,7 +41,7 @@
 
 ;Exercise 3.71
 
-(define (cube x) (* x (* x x)))
+(define (cube x) (* x x x))
 (define (cube-sum p) (+ (cube (car p)) (cube (cadr p))))
 (define pairs-i3j3 (pairs integers integers cube-sum))
 
